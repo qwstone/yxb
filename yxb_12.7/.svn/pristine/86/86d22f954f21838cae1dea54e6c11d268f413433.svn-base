@@ -1,0 +1,124 @@
+//
+//  HomeOfShiXin.m
+//  YOUXINBAO
+//
+//  Created by 密码是111 on 16/9/26.
+//  Copyright © 2016年 北京全彩时代网络科技有限公司. All rights reserved.
+//
+
+#import "HomeOfShiXinView.h"
+#import "LoseCreditSalaViewController.h"
+@implementation HomeOfShiXinView
+
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self createView];
+//        [self createButton];
+        self.backgroundColor = [UIColor whiteColor];
+    }
+    return self;
+}
+- (void)createView {
+    CGFloat linw = kDeviceWidth/640*4;
+    UIView * linnn = [[UIView alloc] initWithFrame:CGRectMake(0, 0, linw+kDeviceWidth/750*2  , kDeviceWidth/750*72)];
+    linnn.backgroundColor = [YXBTool colorWithHexString:@"#e84a44"];
+    linnn.layer.cornerRadius = kDeviceWidth/640*2;
+//    [self addSubview:linnn];
+    
+    //上半部分
+    UIView * upView = [[UIView alloc] initWithFrame:CGRectMake(linw, 0, kDeviceWidth-linw, kDeviceWidth/750*72)];
+    upView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:upView];
+    
+    UIImageView *img = [[UIImageView alloc ]initWithFrame:CGRectMake(kDeviceWidth/750*25, kDeviceWidth/750*20, kDeviceWidth/750*165, kDeviceWidth/750*42)];
+    img.image = [UIImage imageNamed:@"ShiXinImg"];
+    [upView addSubview:img];
+
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(kDeviceWidth/750*35 + kDeviceWidth/750*152 + kDeviceWidth/750*15 , kDeviceWidth/750*36, kDeviceWidth/750*507, 1)];
+    line.backgroundColor = [YXBTool colorWithHexString:@"#FDE9F0"];
+    [upView addSubview:line];
+    
+    UIButton *one = [[UIButton alloc] initWithFrame:CGRectMake(kDeviceWidth/750*30,kDeviceWidth/750*22+img.bottom, kDeviceWidth/750*96, kDeviceWidth/750*58)];
+    [one setBackgroundImage:[UIImage imageNamed:@"ShiXin_name"] forState:UIControlStateNormal];
+    [self addSubview:one];
+    
+    UIButton *tow = [[UIButton alloc] initWithFrame:CGRectMake(kDeviceWidth/750*3+one.right,kDeviceWidth/750*22+img.bottom, kDeviceWidth/750*134, kDeviceWidth/750*58)];
+    [tow setBackgroundImage:[UIImage imageNamed:@"ShiXin_TEL"] forState:UIControlStateNormal];
+    [self addSubview:tow];
+    
+    UIButton *three = [[UIButton alloc] initWithFrame:CGRectMake(kDeviceWidth/750*6+tow.right,kDeviceWidth/750*22+img.bottom, kDeviceWidth/750*238, kDeviceWidth/750*58)];
+    [three setBackgroundImage:[UIImage imageNamed:@"ShiXin_Card"] forState:UIControlStateNormal];
+    [self addSubview:three];
+    
+    UIButton *four = [[UIButton alloc] initWithFrame:CGRectMake(kDeviceWidth/750*9+three.right,kDeviceWidth/750*22+img.bottom, kDeviceWidth/750*200, kDeviceWidth/750*58)];
+    [four setBackgroundImage:[UIImage imageNamed:@"ShiXin_stues"] forState:UIControlStateNormal];
+    [self addSubview:four];
+    
+    UIView *imgname = [[UIView alloc ]initWithFrame:CGRectMake(kDeviceWidth/750*30, kDeviceWidth/750*7+one.bottom, kDeviceWidth/750*96, kDeviceWidth/750*244)];
+    imgname.backgroundColor =[UIColor colorWithPatternImage: [UIImage imageNamed:@"ShiXin_lab_name"]];
+       [self addSubview:imgname];
+    
+    UIView *imgTEL = [[UIView alloc ]initWithFrame:CGRectMake(kDeviceWidth/750*5+imgname.right, kDeviceWidth/750*7+one.bottom, kDeviceWidth/750*134, kDeviceWidth/750*244)];
+    imgTEL.backgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"ShiXin_lab_tel"]];
+    [self addSubview:imgTEL];
+    
+    UIView *imgCard = [[UIView alloc ]initWithFrame:CGRectMake(kDeviceWidth/750*5+imgTEL.right, kDeviceWidth/750*7+one.bottom, kDeviceWidth/750*238, kDeviceWidth/750*244)];
+    imgCard.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ShiXin_lab_card"]];
+    [self addSubview:imgCard];
+    UIView *imgstaues = [[UIView alloc ]initWithFrame:CGRectMake(kDeviceWidth/750*5+imgCard.right, kDeviceWidth/750*7+one.bottom, kDeviceWidth/750*200, kDeviceWidth/750*244)];
+    imgstaues.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Shixin_lab_staues"]];
+    [self addSubview:imgstaues];
+    for (int i = 0 ; i < 4; i++) {
+        
+        _nameLab=[[UILabel alloc] initWithFrame:CGRectMake(0,0+kDeviceWidth/750*50*i, kDeviceWidth/750*96, kDeviceWidth/750*50)];
+        _nameLab.textColor = [UIColor blackColor];
+        _nameLab.text = @"红包/日";
+        _nameLab.font = [UIFont boldSystemFontOfSize:kDeviceWidth/750*25];
+        _nameLab.textAlignment = NSTextAlignmentCenter;
+        _nameLab.tag=i;
+        [imgname addSubview:_nameLab];
+        _TELLab=[[UILabel alloc] initWithFrame:CGRectMake(0,0+kDeviceWidth/750*i*50, kDeviceWidth/750*96, kDeviceWidth/750*50)];
+        _TELLab.textColor = [UIColor blackColor];
+        _TELLab.text = @"红包/日";
+        _TELLab.font = [UIFont boldSystemFontOfSize:kDeviceWidth/750*25];
+        _TELLab.textAlignment = NSTextAlignmentCenter;
+        _TELLab.tag=i;
+        [imgTEL addSubview:_TELLab];
+
+        _cardLab=[[UILabel alloc] initWithFrame:CGRectMake(0,0+kDeviceWidth/750*i*50, kDeviceWidth/750*238, kDeviceWidth/750*50)];
+        _cardLab.textColor = [UIColor blackColor];
+        _cardLab.text = @"红包/日";
+        _cardLab.font = [UIFont boldSystemFontOfSize:kDeviceWidth/750*25];
+        _cardLab.textAlignment = NSTextAlignmentCenter;
+        _cardLab.tag=i;
+        [imgCard addSubview:_cardLab];
+
+        _stauesLab=[[UILabel alloc] initWithFrame:CGRectMake(0,0+kDeviceWidth/750*i*50, kDeviceWidth/750*200, kDeviceWidth/750*50)];
+        _stauesLab.textColor = [UIColor blackColor];
+        _stauesLab.text = @"红包/日";
+        _stauesLab.font = [UIFont boldSystemFontOfSize:kDeviceWidth/750*25];
+        _stauesLab.textAlignment = NSTextAlignmentCenter;
+        _stauesLab.tag=i;
+        [imgstaues addSubview:_stauesLab];
+
+        
+    }
+    
+    UIButton *big = [[UIButton alloc] initWithFrame:self.bounds];
+    big.tag = 1000;
+    [big addTarget:self action:@selector(butAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:big];
+    
+}
+
+-(void)butAction:(UIButton*)button{
+    LoseCreditSalaViewController *losecreditsala = [[LoseCreditSalaViewController alloc] init];
+    losecreditsala.hidesBottomBarWhenPushed = YES;
+    [[YXBTool getCurrentNav] pushViewController:losecreditsala animated:YES];
+}
+-(void)setDataArray:(NSMutableArray *)DataArray{
+    
+}
+@end

@@ -1,0 +1,30 @@
+//
+//  PayInstance.m
+//  LotteryApp
+//
+//  Created by chenglibin on 16/9/1.
+//  Copyright © 2016年 windo. All rights reserved.
+//
+
+#import "PayInstance.h"
+#import "SPayClientWechatConfigModel.h"
+#import "SPayClient.h"
+
+@implementation PayInstance
++(void)initializeWeifutongPaySDKWithWeChatAppid:(NSString *)appid
+{
+    SPayClientWechatConfigModel *wechatConfigModel = [[SPayClientWechatConfigModel alloc] init];
+    wechatConfigModel.appScheme = appid;
+    wechatConfigModel.wechatAppid = appid;
+    //配置微信APP支付
+    [[SPayClient sharedInstance] wechatpPayConfig:wechatConfigModel];
+    
+    NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+    UIApplication *app = [UIApplication sharedApplication];
+    NSDictionary *dic = [us objectForKey:@"__launchOptions"];
+    [[SPayClient sharedInstance] application:app
+               didFinishLaunchingWithOptions:dic];
+
+}
+
+@end

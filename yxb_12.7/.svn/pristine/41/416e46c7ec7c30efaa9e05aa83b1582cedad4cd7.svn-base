@@ -1,0 +1,53 @@
+//
+//  LitigationCell.m
+//  YOUXINBAO
+//
+//  Created by pro on 2016/12/7.
+//  Copyright © 2016年 北京全彩时代网络科技有限公司. All rights reserved.
+//
+
+#import "LitigationCell.h"
+
+@interface LitigationCell ()
+
+@property (weak, nonatomic) UIImageView *   iconImg;//头像
+@property (weak, nonatomic) UIButton    *   selectBtn;//选择框
+
+@property (weak, nonatomic) UILabel     *   nickNameLabel;//昵称
+@property (weak, nonatomic) UILabel     *   descriptLabel;//还款类型
+
+
+@property (weak, nonatomic) UIImageView *   overdueImg;//逾期图片
+@property (weak, nonatomic) UIButton    *   mergeBtn;//合并按钮
+
+
+@property (weak, nonatomic) UILabel *moneyLabel;//借款金额
+@property (weak, nonatomic) UILabel *interestLabel;//利息
+@property (weak, nonatomic) UILabel *backTimeLabel;//还款时间
+@property (weak, nonatomic) UILabel *timeTypeLabel;//时间类型
+
+
+@end
+
+@implementation LitigationCell
+
+
+
+
+
+
+
+
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

@@ -1,0 +1,70 @@
+//
+//  GongGaoView.m
+//  YOUXINBAO
+//
+//  Created by zjp on 16/2/17.
+//  Copyright © 2016年 北京全彩时代网络科技有限公司. All rights reserved.
+//
+
+#import "GongGaoView.h"
+
+@implementation GongGaoView
+
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self createView];
+        [self startAnimation];
+    }
+    return self;
+}
+
+- (void)createView {
+
+    UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(kDeviceWidth/750*35, kDeviceWidth/750*12, kDeviceWidth/750*36, kDeviceWidth/750*32)];
+    img.image = [UIImage imageNamed:@"VOLUME 2"];
+    
+    self.CBAlabel = [[CBAutoScrollLabel alloc] initWithFrame:CGRectMake(img.right+kDeviceWidth/750*10, 0, kDeviceWidth/750*640, kDeviceWidth/750*57)];
+    self.CBAlabel.textColor = [UIColor whiteColor];
+    self.CBAlabel.labelSpacing = self.CBAlabel.width; // distance between start and end labels
+    self.CBAlabel.pauseInterval = 1.5; // seconds of pause before scrolling starts again
+    self.CBAlabel.scrollSpeed = 35; // pixels per second
+    self.CBAlabel.textAlignment = NSTextAlignmentCenter; // centers text when no auto-scrolling is applied
+    self.CBAlabel.font = [UIFont boldSystemFontOfSize:kDeviceWidth/750*24];;
+    self.CBAlabel.fadeLength = 15.f;
+    self.CBAlabel.scrollDirection = CBAutoScrollDirectionLeft;
+    [self addSubview:img];
+
+    [self addSubview:self.CBAlabel];
+}
+
+- (void)setStr:(NSString *)str {
+//
+//    if (str == nil || [str isEqualToString:@""]) {
+//        self.hidden = YES;
+//    }
+    self.CBAlabel.text = str;
+
+}
+//翻转动画
+- (void)startAnimation
+{
+    UIImageView *img2 = [[UIImageView alloc] initWithFrame:CGRectMake(kDeviceWidth/750*460, kDeviceWidth/750*12, kDeviceWidth/750*13, kDeviceWidth/750*36)];
+    img2.image = [UIImage imageNamed:@"jinbi"];
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [UIView beginAnimations:nil context:context];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationRepeatAutoreverses:NO];
+    [UIView setAnimationTransition: UIViewAnimationTransitionFlipFromLeft forView:img2 cache:YES];
+    [UIView setAnimationDelegate:self];
+    [UIView commitAnimations];
+    [UIView setAnimationDidStopSelector:@selector(startAnimation)];
+
+
+    [self addSubview:img2];
+
+}
+
+@end

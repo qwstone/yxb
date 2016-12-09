@@ -1,0 +1,198 @@
+//
+//  MyLoanListDialogBgView.m
+//  YOUXINBAO
+//
+//  Created by CH10 on 16/2/16.
+//  Copyright © 2016年 北京全彩时代网络科技有限公司. All rights reserved.
+//
+
+#import "MyLoanListDialogBgView.h"
+#import "YXBLoanChat.h"
+#define sWidth self.frame.size.width
+#define sHeight self.frame.size.height
+#define toBottomHeight 30.0
+#define tableViewWidth 265.0
+@interface MyLoanListDialogBgView ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+{
+    UIView *_bgView;
+}
+
+@property (nonatomic,assign)NSInteger index;
+@property (nonatomic,weak)UIImageView *imgTop;
+@property (nonatomic,weak)UIImageView *imgCon;
+@property (nonatomic,weak)UIButton *dialogBtn;
+@property (nonatomic,weak)UIButton *sendBtn;
+@property (nonatomic,weak)UIView *rectView;
+//@property (nonatomic,weak)UIImageView *imgFooter;
+@end
+
+@implementation MyLoanListDialogBgView
+
+
+-(void)setIndex:(NSInteger)index{
+    if (_index !=index) {
+        _index = index;
+        
+    }
+}
+-(void)setDataArray:(NSMutableArray *)dataArray{
+    _dataArray = dataArray;
+    [_myTableView reloadData];
+}
+-(void)updateRectViewWithFrame:(CGRect)frame{
+    CGFloat sw = frame.size.width;
+    CGFloat sh = frame.size.height;
+    _imgTop.frame = CGRectMake(0, 0, sw, 9);
+    _imgCon.frame = CGRectMake(0, 9, sw, sh-9-57/2.0);
+    _dialogBtn.frame = CGRectMake(0, sh-57.0/2, 75, 57.0/2);
+    _rectView.frame = CGRectMake(_dialogBtn.right-2, sh-57.0/2, sw-_dialogBtn.width-_sendBtn.width+2, 57.0/2);
+    _sendBtn.frame = CGRectMake(sw-62, sh-57.0/2, 62, 57.0/2);
+    _bgView.frame = CGRectMake(2, self.height-toBottomHeight+2, tableViewWidth, 0);
+    _myTableView.frame = CGRectMake(2, self.height-toBottomHeight+2, tableViewWidth, 0);
+}
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        _myTableViewHidd = YES;
+        _dataArray = [[NSMutableArray alloc] init];
+        _index = 0;
+        //创建背景图片
+        UIImageView *imgtop = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, sWidth, 9)];
+        imgtop.image = [UIImage imageNamed:@"qrbgtop"];
+        self.imgTop = imgtop;
+        [self addSubview:imgtop];
+        
+        UIImageView *imgCon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 9, sWidth, sHeight-9-57/2.0)];
+        imgCon.image = [UIImage imageNamed:@"qrbgcon"];
+        self.imgCon = imgCon;
+        [self addSubview:imgCon];
+        
+        UIButton *dialogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        dialogBtn.frame = CGRectMake(0, sHeight-57.0/2, 75, 57.0/2);
+        [dialogBtn setBackgroundImage:[UIImage imageNamed:@"MyLoanList_dialog"] forState:UIControlStateNormal];
+        [dialogBtn addTarget:self action:@selector(dialogBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        self.dialogBtn = dialogBtn;
+        [self addSubview:dialogBtn];
+        
+        UIButton *sendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        sendBtn.frame = CGRectMake(sWidth-62, sHeight-57.0/2, 62, 57.0/2);
+        [sendBtn setBackgroundImage:[UIImage imageNamed:@"myLoanList_sending"] forState:UIControlStateNormal];
+        [sendBtn addTarget:self action:@selector(sendBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        self.sendBtn = sendBtn;
+        [self addSubview:sendBtn];
+        
+        UIView *rectView = [[UIView alloc] initWithFrame:CGRectMake(dialogBtn.right-2, sHeight-57.0/2, sWidth-dialogBtn.width-sendBtn.width+2, 57.0/2)];
+        rectView.layer.borderColor = rgb(215, 215, 215, 1).CGColor;
+        rectView.layer.borderWidth = 1;
+        self.rectView = rectView;
+        [self addSubview:rectView];
+        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, rectView.width, 57.0/2)];
+        textField.placeholder = @"请选择不同模板语境";
+        
+        textField.font = [UIFont systemFontOfSize:23.91/2];
+        textField.keyboardType = UIKeyboardTypeDefault;
+        UIView *temp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 17/2.0, 57.0/2)];
+        textField.leftView = temp;
+        textField.delegate = self;
+        textField.userInteractionEnabled = NO;
+        textField.leftViewMode = UITextFieldViewModeAlways;
+        self.textField = textField;
+        [self.rectView addSubview:textField];
+        
+        UIButton *textBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        textBtn.backgroundColor = [UIColor clearColor];
+        textBtn.frame = CGRectMake(0, 0, sWidth-75-62, 57.0/2);
+        [textBtn addTarget:self action:@selector(textBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self.rectView addSubview:textBtn];
+        
+        
+
+        UIView *dialogBgView = [[UIView alloc] initWithFrame:CGRectMake(2, self.height-toBottomHeight+2, tableViewWidth, 0)];
+        dialogBgView.alpha = 0.7;
+        _bgView = dialogBgView;
+        dialogBgView.backgroundColor = [UIColor blackColor];
+        [self addSubview:dialogBgView];
+        
+        UITableView *dialogView = [[UITableView alloc] initWithFrame:CGRectMake(2, self.height-toBottomHeight+2, tableViewWidth, 0) style:UITableViewStylePlain];
+        dialogView.backgroundColor = [UIColor clearColor];
+        dialogView.delegate = self;
+        dialogView.dataSource = self;
+        self.myTableView = dialogView;
+        [self addSubview:dialogView];
+    }
+    return self;
+}
+-(void)dialogBtnClick:(UIButton *)btn{
+
+    [self bringSubviewToFront:_bgView];
+    [self bringSubviewToFront:_myTableView];
+    _myTableViewHidd = !_myTableViewHidd;
+    [self myTableViewHidden:_myTableViewHidd];
+
+}
+-(void)textBtnClick:(UIButton *)btn{
+    _myTableViewHidd = !_myTableViewHidd;
+    [self myTableViewHidden:_myTableViewHidd];
+}
+-(void)myTableViewHidden:(BOOL)hidden{
+    [self bringSubviewToFront:_bgView];
+    [self bringSubviewToFront:_myTableView];
+    [UIView animateWithDuration:0.5 animations:^{
+        CGFloat height =7*33;
+        CGFloat y = self.height-28-height;
+        CGFloat y2 = y;
+        CGFloat h2 = height;
+        if(height>self.height-32){//适配4,5
+            
+            h2 = self.height-30;
+            y2 = 2;
+        }
+        if (!hidden== YES) {
+            _bgView.frame = CGRectMake(2, y2, tableViewWidth, h2);
+            _myTableView.frame = CGRectMake(2, y2, tableViewWidth, h2);
+            
+        }else{
+            _bgView.frame = CGRectMake(2, self.height-toBottomHeight+2, tableViewWidth, 0);
+            _myTableView.frame = CGRectMake(2, self.height-toBottomHeight+2, tableViewWidth,0);
+        }
+    }];
+}
+-(void)sendBtnClick{
+    _myTableViewHidd = YES;
+    [self myTableViewHidden:YES];
+    [self.delegate sendBtnWasClickedWithSelectedIndex:_index];
+}
+#pragma mark - UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _dataArray.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *cellID = @"cellName";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        UIView *view = [[UIView alloc] initWithFrame:cell.bounds];
+        view.backgroundColor = [UIColor blackColor];
+        cell.selectedBackgroundView = view;
+    }
+    cell.backgroundColor = [UIColor clearColor];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.font = [UIFont systemFontOfSize:13];
+    if (_dataArray.count) {
+        YXBLoanChat *model = [_dataArray objectAtIndex:indexPath.row];
+        cell.textLabel.text = model.text;
+    }
+    return cell;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 33.0;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    _myTableViewHidd = YES;
+    _index = indexPath.row;
+    [self myTableViewHidden:_myTableViewHidd];
+    [self.delegate dialogTextDidSelectedAtIndex:indexPath.row];
+}
+@end

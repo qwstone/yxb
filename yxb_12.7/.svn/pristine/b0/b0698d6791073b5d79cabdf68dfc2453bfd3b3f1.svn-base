@@ -1,0 +1,13 @@
+//
+//  PayInstance.h
+//  LotteryApp
+//
+//  Created by chenglibin on 16/9/1.
+//  Copyright © 2016年 windo. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface PayInstance : NSObject
++(void)initializeWeifutongPaySDKWithWeChatAppid:(NSString *)appid;
+@end

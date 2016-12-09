@@ -1,0 +1,151 @@
+//
+//  GongGaoView.m
+//  YOUXINBAO
+//
+//  Created by zjp on 16/2/17.
+//  Copyright © 2016年 北京全彩时代网络科技有限公司. All rights reserved.
+//
+
+#import "GongGaoView.h"
+#import "BillDetailViewController.h"
+@implementation GongGaoView
+
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self createView];
+        [self startAnimation];
+    }
+    return self;
+}
+
+- (void)createView {
+
+    UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(kDeviceWidth/750*35, kDeviceWidth/750*12, kDeviceWidth/750*36, kDeviceWidth/750*32)];
+    img.image = [UIImage imageNamed:@"VOLUME 2"];
+    
+    //滑动列表
+    _HomeLiseTableView = [[UITableView alloc] initWithFrame:CGRectMake(img.right+kDeviceWidth/750*10, 0, kDeviceWidth-kDeviceWidth/750*80, kDeviceWidth/750*60) style:UITableViewStylePlain];
+    _HomeLiseTableView.delegate = self;
+    _HomeLiseTableView.dataSource = self;
+    _HomeLiseTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _HomeLiseTableView.backgroundColor = [UIColor clearColor];
+    
+    
+//    self.CBAlabel = [[CBAutoScrollLabel alloc] initWithFrame:CGRectMake(img.right+kDeviceWidth/750*10, 0, kDeviceWidth/750*640, kDeviceWidth/750*57)];
+//    self.CBAlabel.textColor = [UIColor whiteColor];
+//    self.CBAlabel.labelSpacing = self.CBAlabel.width; // distance between start and end labels
+//    self.CBAlabel.pauseInterval = 1.5; // seconds of pause before scrolling starts again
+//    self.CBAlabel.scrollSpeed = 35; // pixels per second
+//    self.CBAlabel.textAlignment = NSTextAlignmentCenter; // centers text when no auto-scrolling is applied
+//    self.CBAlabel.font = [UIFont boldSystemFontOfSize:kDeviceWidth/750*24];;
+//    self.CBAlabel.fadeLength = 15.f;
+//    self.CBAlabel.scrollDirection = CBAutoScrollDirectionLeft;
+    [self addSubview:img];
+    [self addSubview:_HomeLiseTableView];
+//    [self addSubview:self.CBAlabel];
+}
+
+- (void)setStr:(NSString *)str {
+//
+//    if (str == nil || [str isEqualToString:@""]) {
+//        self.hidden = YES;
+//    }
+    _str=str;
+//    self.CBAlabel.text = str;
+//    _listData=[[NSMutableArray alloc]initWithObjects:_str, nil];
+
+}
+//翻转动画
+- (void)startAnimation
+{
+//    CGRect frame = CGRectMake(_HomeLiseTableView.right+kDeviceWidth/750*10,kDeviceWidth/750*12,0,0);
+//    frame.size = [UIImage imageNamed:@"guzhang.gif"].size;
+//        // 读取gif图片数据
+//    NSData *gif = [NSData dataWithContentsOfFile: [[NSBundle mainBundle] pathForResource:@"JinBi" ofType:@"gif"]];
+//    // view生成
+//    UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
+//    webView.userInteractionEnabled = NO;//用户不可交互
+//    [webView loadData:gif MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
+//    [self addSubview:webView];
+    
+    
+//    UIImageView *gifImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_HomeLiseTableView.right+kDeviceWidth/750*10.0f,kDeviceWidth/750*12.0f,kDeviceWidth/750*190.0f,kDeviceWidth/750*120.0f)];
+//    NSArray *gifArray = [NSArray arrayWithObjects:[UIImage imageNamed:@"1"],
+//                         [UIImage imageNamed:@"jinbi.png"],
+//                                                nil];
+//    gifImageView.animationImages = gifArray; //动画图片数组
+//    gifImageView.animationDuration = 5; //执行一次完整动画所需的时长
+//    int i=1; i++;
+//    gifImageView.animationRepeatCount = i;  //动画重复次数
+//    [gifImageView startAnimating];
+//    [self addSubview:gifImageView];
+
+}
+-(void)setDataArray:(NSMutableArray *)DataArray{
+    if (_DataArray != DataArray) {
+        _DataArray = DataArray;
+        _nutableArray = [[NSMutableArray alloc]initWithArray:_DataArray];
+        
+        int i = (int)[_nutableArray count];
+        
+        while(--i > 0) {
+            int j = rand() % (i+1);
+            [_nutableArray exchangeObjectAtIndex:i withObjectAtIndex:j];
+            
+        }
+        [_HomeLiseTableView reloadData];
+    }
+}
+
+#pragma mark --- tableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    return kDeviceWidth/750*60;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.nutableArray.count;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    static NSString * cellID  =@"cellIDdd";
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [UIColor clearColor];
+        cell.contentView.backgroundColor = [UIColor clearColor];
+    }
+    
+    NSMutableDictionary *dic = self.nutableArray[indexPath.row];
+    NSString *string = [NSString stringWithFormat:@"%@ ",[dic objectForKey:@"content"]];
+        
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:kDeviceWidth/750*26];
+    [cell.textLabel setAdjustsFontSizeToFitWidth:YES];
+    cell.textLabel.textColor = [YXBTool colorWithHexString:@"#FFFFFF"];
+    cell.textLabel.text = string;
+    
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSDictionary *heroSelected=[_nutableArray objectAtIndex:indexPath.row];
+    if([[heroSelected objectForKey:@"loanmark"] intValue]==1){
+        NSLog(@"共有多少人参与");
+            }
+    else{
+        BillDetailViewController * bill = [[BillDetailViewController alloc] init];
+        bill.isHideInfo = YES;
+        bill.encryptionID = [NSString stringWithFormat:@"%@ ",[self.nutableArray[indexPath.row] objectForKey:@"loanmark"]];;
+        bill.hidesBottomBarWhenPushed = YES;
+        [[YXBTool getCurrentNav] pushViewController:bill animated:YES];
+        
+
+    }
+}
+
+@end

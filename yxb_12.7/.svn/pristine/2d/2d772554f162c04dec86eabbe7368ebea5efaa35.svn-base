@@ -1,0 +1,37 @@
+//
+//  YXBHomeController.h
+//  YOUXINBAO
+//
+//  Created by zjp on 16/1/26.
+//  Copyright © 2016年 北京全彩时代网络科技有限公司. All rights reserved.
+//
+
+#import "QCBaseViewController.h"
+#import "NoticeScrollView.h"
+#import "HomeCtrMidView.h"
+#import "HomeCtrBotView.h"
+#import "GongGaoView.h"
+#import "CPBTimerManager.h"
+#import "QCDeviceModel.h"
+#import "QCDeviceManager.h"
+#import "HomeLiCaiView.h"
+@class LiCaiViewOfHome;
+@interface YXBHomeController : QCBaseViewController <HomeTopScorllViewDelegate,QCBaseTableViewDelegate,CPBTimerDelegate,UIScrollViewDelegate> {
+    CPBTimerManager             *_timerManager;
+    NSInteger                   _timeHomeRequest;
+     UIScrollView                *_guideChartscrollView;
+}
+
+@property(nonatomic,strong)UIView *bgview;
+@property(nonatomic,strong)UIScrollView  *bgScrollView;
+@property(nonatomic,strong)NoticeScrollView  *topView;
+@property(nonatomic,strong)HomeCtrMidView *midView;
+@property(nonatomic,strong)HomeCtrBotView *botView;
+@property(nonatomic,strong)HomeLiCaiView *LiCaiView;
+@property(nonatomic,strong)GongGaoView *gonggao;
+@property (nonatomic,strong)QCBaseTableView *tableView;
+@property(nonatomic,strong)LiCaiViewOfHome *licaiNew;
+@property(nonatomic,strong)NSMutableArray   *homeTopData;//轮播
+
+@property(nonatomic,strong)NSDictionary   *licaidic;//理财
+@end

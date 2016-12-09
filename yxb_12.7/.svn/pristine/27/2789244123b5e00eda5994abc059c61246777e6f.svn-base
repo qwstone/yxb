@@ -1,0 +1,30 @@
+//
+//  MyLoanListDialogBgView.h
+//  YOUXINBAO
+//
+//  Created by CH10 on 16/2/16.
+//  Copyright © 2016年 北京全彩时代网络科技有限公司. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@protocol MyLoanListDialogBgViewDelegate <NSObject>
+
+-(void)sendBtnWasClickedWithSelectedIndex:(NSInteger)index;
+//-(void)dialogBtnWasClicked;
+-(void)dialogTextDidSelectedAtIndex:(NSInteger)index;
+
+@end
+
+
+
+@interface MyLoanListDialogBgView : UIView
+
+@property (nonatomic,assign)id<MyLoanListDialogBgViewDelegate>delegate;
+@property (nonatomic,weak)UITableView *myTableView;
+@property (nonatomic,strong)NSMutableArray *dataArray;
+@property (nonatomic,assign)BOOL myTableViewHidd;
+@property (nonatomic,weak)UITextField *textField;
+-(void)myTableViewHidden:(BOOL)hidden;
+-(void)updateRectViewWithFrame:(CGRect)frame;
+@end
